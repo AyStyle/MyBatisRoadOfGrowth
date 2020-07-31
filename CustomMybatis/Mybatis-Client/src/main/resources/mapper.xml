@@ -1,0 +1,17 @@
+<mapper namespace="ankang.mybatis.learn.dao.MybatisVersionDao">
+    <!-- sql的唯一标识statementId：namespace.id -->
+    <select id="findAll" paramterType="ankang.mybatis.learn.pojo.MybatisVersion" resultType="ankang.mybatis.learn.pojo.MybatisVersion">
+        SELECT * FROM db_mybatis.tb_mybatis_version
+    </select>
+    
+    <!--
+        id：用于标识sql，实现与方法的绑定
+        resultType：实现反射结果集，并返回结果
+        paramterType：参数类型，如果有多个参数，则：传入一个具体对象
+     -->
+    <select id="findOne" paramterType="ankang.mybatis.learn.pojo.MybatisVersion"  resultType="ankang.mybatis.learn.pojo.MybatisVersion">
+        SELECT * FROM db_mybatis.tb_mybatis_version WHERE id = #{id}
+    </select>
+
+
+</mapper>
