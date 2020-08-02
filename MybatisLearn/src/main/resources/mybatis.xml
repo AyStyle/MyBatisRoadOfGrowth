@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 属性配置：resource可以用来声明在classpath下.properties文件中的属性 -->
+    <properties resource="jdbc.properties">
+        <!-- 声明其它变量 -->
+        <property name="other" value="other"/>
+    </properties>
+    
+    <!--    -->
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="false"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <setting name="defaultStatementTimeout" value="25"/>
+        <setting name="defaultFetchSize" value="100"/>
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    </settings>
+    
+    <!-- 类型别名：实体类全限定类名的别名 -->
+    <typeAliases>
+        <!-- 给特定的实体类起别名 -->
+        <typeAlias alias="MyBatisVersion" type="ankang.mybatis.learn.pojo.MyBatisVersion"/>
+        
+        <!-- 给整个包下实体类起别名，别名为该包下类的类名，别名不区分大小写 -->
+        <package name="ankang.mybatis.learn.pojo"/>
+    </typeAliases>
+    
+    <!-- mybatis-config.xml -->
+    <!--    <typeHandlers>-->
+    <!--        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="java.math.RoundingMode"/>-->
+    <!--    </typeHandlers>-->
+    
+    <!-- mybatis-config.xml -->
+    <!--    <objectFactory type="org.mybatis.example.ExampleObjectFactory">-->
+    <!--        <property name="someProperty" value="100"/>-->
+    <!--    </objectFactory>-->
+    
+    <plugins>
+        <plugin interceptor="ankang.mybatis.learn.plugin.MyPlugin">
+            <property name="name" value="ankang"/>
+        </plugin>
+        
+        <!-- 分页插件的使用 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 注册默认方言处理器 -->
+            <property name="dialect" value="com.github.pagehelper.PageHelper"/>
+        </plugin>
+        
+        <!-- 通用Mapper的使用 -->
+        <plugin interceptor="tk.mybatis.mapper.mapperhelper.MapperInterceptor">
+            <!-- 注册默认通用Mapper接口 -->
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+        </plugin>
+    </plugins>
+    
+    <!-- 配置mybatis数据库的运行环境， default：指定默认执行环境 -->
+    <environments default="development">
+        <!-- 配置具体的环境，id：指明环境名称 -->
+        <environment id="development">
+            <!-- 当前事务交由JDBC管理 -->
+            <transactionManager type="JDBC"/>
+            <!-- 配置数据源：type表示数据库连接来源的方式
+                    1.POOLED - 每次从数据库连接池中获取连接
+                    2.UNPOOLED - 每次使用时创建一个连接
+                    3.JNDI -
+            -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <!-- 引入映射配置文件 -->
+    <mappers>
+        <package name="ankang.mybatis.learn.dao"/>
+    </mappers>
+    <!-- Using classpath relative resources（使用classpath下的资源文件） -->
+    <!--    <mappers>-->
+    <!--        <mapper resource="org/mybatis/builder/AuthorMapper.xml"/>-->
+    <!--        <mapper resource="org/mybatis/builder/BlogMapper.xml"/>-->
+    <!--        <mapper resource="org/mybatis/builder/PostMapper.xml"/>-->
+    <!--    </mappers>-->
+    
+    <!-- Using url fully qualified paths（使用完全限定资源定位符资源文件，例如：本地文件） -->
+    <!--    <mappers>-->
+    <!--        <mapper url="file:///var/mappers/AuthorMapper.xml"/>-->
+    <!--        <mapper url="file:///var/mappers/BlogMapper.xml"/>-->
+    <!--        <mapper url="file:///var/mappers/PostMapper.xml"/>-->
+    <!--    </mappers>-->
+    
+    <!-- Using mapper interface classes（使用全限定类名指定资源文件，要求全限定类名下有对应的同名Mapper.xml文件） -->
+    <!--    <mappers>-->
+    <!--        <mapper class="org.mybatis.builder.AuthorMapper"/>-->
+    <!--        <mapper class="org.mybatis.builder.BlogMapper"/>-->
+    <!--        <mapper class="org.mybatis.builder.PostMapper"/>-->
+    <!--    </mappers>-->
+    
+    <!-- Register all interfaces in a package as mappers（扫描某个包下的全部资源文件，这些资源文件都是Mapper.xml文件） -->
+    <!--    <mappers>-->
+    <!--        <package name="org.mybatis.builder"/>-->
+    <!--    </mappers>-->
+</configuration>

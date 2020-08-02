@@ -1,0 +1,108 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace：接口全限定路径，与id一起组成statementId，实现SQL全局唯一标识 -->
+<mapper namespace="ankang.mybatis.learn.dao.MyBatisVersionDao">
+    <!-- sql标签：抽取SQL -->
+    <sql id="table_name">
+        db_mybatis.tb_mybatis_version
+    </sql>
+    
+    <!--
+        id：标识namespace指定接口的方法，与namespace一起组成statementId，实现SQL 全局唯一标识
+     -->
+    <!-- R 查询 -->
+    <select id="findAll" resultType="MyBatisVersion">
+        SELECT * FROM
+        <include refid="table_name"/>
+    </select>
+    
+    <!-- C 插入 -->
+    <insert id="save" parameterType="MyBatisVersion" keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+        INSERT INTO db_mybatis.tb_mybatis_version(`version`) VALUES (#{version})
+    </insert>
+    
+    <!-- U 更新 -->
+    <update id="update" parameterType="MyBatisVersion" keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+        UPDATE db_mybatis.tb_mybatis_version SET `version` = #{version} , `desc` = #{desc} WHERE id = #{id}
+    </update>
+    
+    <!-- D 删除 -->
+    <delete id="delete" parameterType="MyBatisVersion">
+        DELETE FROM db_mybatis.tb_mybatis_version WHERE id = #{id}
+    </delete>
+    
+    <!-- 多条件组合查询：动态SQL -->
+    <select id="findBy" parameterType="MyBatisVersion" resultType="MyBatisVersion">
+        <!--
+         where标签会自动WHERE关键字，并且去掉第一个AND或OR关键字
+         if标签会根据test条件自动拼接SQL
+        -->
+        SELECT * FROM db_mybatis.tb_mybatis_version
+        <where>
+            <if test="versionTime != null">AND `version_time` = #{versionTime}</if>
+        </where>
+    </select>
+    
+    <insert id="saveAll" parameterType="list" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO db_mybatis.tb_mybatis_version(`version`) VALUES
+        <foreach collection="list" item="mbv" separator=",">(#{mbv.version})</foreach>
+    </insert>
+    
+    <!-- 一对一关联查询 -->
+    <select id="findByVersionWithDownload" parameterType="MyBatisVersion" resultMap="findByVersionWithDownload">
+        SELECT
+            *
+        FROM
+            db_mybatis.tb_mybatis_version AS ver
+        INNER JOIN
+            db_mybatis.tb_mybatis_download AS dl
+        ON
+            ver.id = dl.version_id
+        WHERE
+            ver.id = #{id}
+    </select>
+    
+    <resultMap id="findByVersionWithDownload" type="MyBatisVersion">
+        <id column="id" property="id"/>
+        <result column="version" property="version"/>
+        <result column="version_time" property="versionTime"/>
+        <result column="desc" property="desc"/>
+        <association property="download" javaType="MyBatisDownload">
+            <id column="version_id" property="versionId"/>
+            <result column="download_count" property="downloadCount"/>
+        </association>
+    </resultMap>
+    
+    <!-- 一对多关联查询 -->
+    <select id="findByVersionWithDownloads" parameterType="MyBatisVersion" resultMap="findByVersionWithDownloads">
+        SELECT
+            *
+        FROM
+            db_mybatis.tb_mybatis_version AS ver
+        INNER JOIN
+            db_mybatis.tb_mybatis_download AS dl
+        ON
+            ver.id = MOD(dl.version_id,5)
+        WHERE
+            ver.id = #{id}
+    </select>
+    
+    <resultMap id="findByVersionWithDownloads" type="MyBatisVersion">
+        <id property="id" column="id"/>
+        <result property="version" column="version"/>
+        <result property="versionTime" column="version_time"/>
+        <result property="desc" column="desc"/>
+        <collection property="downloadList" ofType="MyBatisDownload" javaType="list">
+            <id property="versionId" column="version_id"/>
+            <result property="downloadCount" column="download_count"/>
+        </collection>
+    </resultMap>
+    
+    <!-- 开启二级缓存，注意：开启二级缓存后，所有的pojo对象都需要实现序列化接口 -->
+    <!-- Mybatis与Redis整合的二级缓存 -->
+<!--    <cache type="org.mybatis.caches.redis.RedisCache"/>-->
+    <!-- 引用其他Mapper缓存 -->
+    <!--<cache-ref namespace=""/>-->
+</mapper>

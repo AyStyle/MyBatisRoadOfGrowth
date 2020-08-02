@@ -13,15 +13,128 @@
         <module>MybatisLearn</module>
     </modules>
 
-    <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+    <properties>
+        <java.version>1.8</java.version>
+        <junit-jupiter.version>5.6.2</junit-jupiter.version>
+        <lombok.version>1.18.12</lombok.version>
+        <mariadb-java-client.version>2.6.2</mariadb-java-client.version>
+        <mybatis.version>3.5.5</mybatis.version>
+        <druid.version>1.1.23</druid.version>
+        <dom4j.version>2.1.3</dom4j.version>
+        <jaxen.version>1.2.0</jaxen.version>
+        <mybatis-redis.version>1.0.0-beta2</mybatis-redis.version>
+        <mybatis-pagehelper.version>5.2.0</mybatis-pagehelper.version>
+        <mybatis-tk-mapper.version>3.1.3</mybatis-tk-mapper.version>
+        <jsqlparser.version>3.2</jsqlparser.version>
+        <javax-persistence.version>1.0</javax-persistence.version>
+    </properties>
+    
+    <dependencyManagement>
+        <dependencies>
+            <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
+            <dependency>
+                <groupId>org.dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
+            <dependency>
+                <groupId>jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>${jaxen.version}</version>
+            </dependency>
+            
+            <!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
+            <dependency>
+                <groupId>org.mariadb.jdbc</groupId>
+                <artifactId>mariadb-java-client</artifactId>
+                <version>${mariadb-java-client.version}</version>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/org.mybatis.caches/mybatis-redis -->
+            <dependency>
+                <groupId>org.mybatis.caches</groupId>
+                <artifactId>mybatis-redis</artifactId>
+                <version>${mybatis-redis.version}</version>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>${mybatis-pagehelper.version}</version>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/tk.mybatis/mapper -->
+            <dependency>
+                <groupId>tk.mybatis</groupId>
+                <artifactId>mapper</artifactId>
+                <version>${mybatis-tk-mapper.version}</version>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/javax.persistence/persistence-api -->
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>${javax-persistence.version}</version>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/com.github.jsqlparser/jsqlparser -->
+            <dependency>
+                <groupId>com.github.jsqlparser</groupId>
+                <artifactId>jsqlparser</artifactId>
+                <version>${jsqlparser.version}</version>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            
+            <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+    
+            <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            
+        </dependencies>
+    </dependencyManagement>
     
     <build>
         <plugins>
