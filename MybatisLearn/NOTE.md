@@ -35,6 +35,11 @@
     1. xml模式开发 -> 参考test/java/MyBatisVersionTest
     2. 注解模式开发 -> 参考test/java/MyBatisDownloadTest
     
+##### Mybatis作用域及生命周期
+1. SqlSessionFactoryBuilder - 初始化方法中，创建完SqlSessionFactory后，该对象即可丢弃
+2. SqlSessionFactory - 作用域在整个类对象或实例对象中，随着类对象或实例对象的销毁而销毁
+3. SqlSession - 作用域为调用的方法，方法结束SqlSession对象销毁
+
 ##### Mybatis缓存机制
 1. ##### 一级缓存
     ##### 特点：
@@ -102,3 +107,35 @@
 5. ##### Mybatis插件使用
    1. PageHelper - 分页插件使用，该demo在MyBatisVersionTest下
    2. MapperHelper - 通用Mapper插件使用，该demo在MyBatisDownloadTest下
+   
+##### Mybatis主要构件及相互关系
+   1. SqlSession - Mybatis工作时的主要顶层API。表示和数据库交互的回话，完成必要数据库增删改查功能。 
+   2. Executor - Mybatis执行器。Executor是Mybatis调度的核心，负责SQL语句的生成和查询缓存的维护
+   3. StatementHandler - 封装了JDBC Statement操作，负责对JDBC Statement的操作，例如：参数设置、将Statement结果集转换为List集合
+   4. ParameterHandler - 参数处理器，负责将传递的参数转换为JDBC Statement所需要的参数。
+   5. ResultSetHandler - 结果集处理器，负责将JDBC返回的ResultSet结果集对象转换成List类型的集合。
+   6. TypeHandler - 类型处理器，负责转换Java数据类型和JDBC数据类型
+   7. MappedStatement - 维护了select、update、insert、delete节点的封装
+   8. SqlSource - 负责根据用户传递的参数动态生成Sql，并将信息封装到BoundSql对象中
+   9. BoundSql - 表示动态生成的Sql语句以及相应的参数信息
+   
+##### Mybatis总体流程
+   1. 加载配置文件并初始化
+      + 触发条件：加载配置文件
+      + 配置来源：
+         1. mapper.xml配置文件
+         2. Mapper接口的注解对象
+   2. 接受调用请求
+      + 触发条件：调用Mybatis提供的API
+      + 传入参数：statementId和SQL语句的参数
+      + 处理过程：将请求传递给下层的请求处理层进行处理
+   3. 处理操作请求
+      + 触发条件：API接口层传递请求过来
+      + 传入参数：statementId和SQL语句的参数
+      + 处理过程：
+         1. 根据statementId查找到对应的MappedStatement对象
+         2. 根据传入的参数对象解析MappedStatement对象，得到最终要执行的SQL和执行传入参数
+         3. 获取数据库连接，根据得到的最终SQL语句和执行传入参数到数据库执行，并得到执行结果
+         4. 根据MappedStatement对象中的结果映射配置对得到的执行结果进行转换处理，并得到最终的处理结果
+         5. 释放连接资源
+   4. 返回处理结果

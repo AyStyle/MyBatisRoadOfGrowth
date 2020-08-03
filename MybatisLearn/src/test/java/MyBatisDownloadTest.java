@@ -1,6 +1,7 @@
 import ankang.mybatis.learn.dao.MyBatisDownloadDao;
 import ankang.mybatis.learn.pojo.MyBatisDownload;
 import ankang.mybatis.learn.pojo.MyBatisVersion;
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -24,8 +26,8 @@ public class MyBatisDownloadTest {
     private SqlSession session;
 
     @BeforeAll
-    private void init() {
-        final InputStream resourceAsStream = MyBatisDownloadTest.class.getClassLoader().getResourceAsStream("mybatis.xml");
+    private void init() throws IOException {
+        final InputStream resourceAsStream = Resources.getResourceAsStream("mybatis.xml");
         final SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(resourceAsStream);
         session = factory.openSession(true);
     }

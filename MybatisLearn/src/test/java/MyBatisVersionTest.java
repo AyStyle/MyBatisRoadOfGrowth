@@ -4,6 +4,7 @@ import ankang.mybatis.learn.pojo.MyBatisVersion;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -28,9 +30,9 @@ public class MyBatisVersionTest {
     private SqlSession session;
 
     @BeforeAll
-    private void init() {
+    private void init() throws IOException {
         // 1.加载配置文件
-        final InputStream resourceAsStream = MyBatisVersionTest.class.getClassLoader().getResourceAsStream("mybatis.xml");
+        final InputStream resourceAsStream = Resources.getResourceAsStream("mybatis.xml");
         // 2.解析了配置文件，并创建SqlSessionFactory工厂
         final SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(resourceAsStream);
         // 3.SqlSessionFactory创建SqlSession会话。openSession接受一个参数autoCommit，用于控制是否自动提交事务
