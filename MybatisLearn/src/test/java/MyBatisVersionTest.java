@@ -147,12 +147,11 @@ public class MyBatisVersionTest {
     @Test
     public void pageHelperTest() {
         final MyBatisVersionDao mapper = session.getMapper(MyBatisVersionDao.class);
-        Page<MyBatisVersion> page = PageHelper.startPage(1 , 3);
 
         int pageNum = 1;
         PageInfo<MyBatisVersion> pageInfo ;
         do {
-            PageHelper.startPage(pageNum , 3);
+            PageHelper.startPage(pageNum , 1);
             final List<MyBatisVersion> all = mapper.findAll();
             pageInfo = new PageInfo<>(all);
 
